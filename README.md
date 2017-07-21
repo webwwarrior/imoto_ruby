@@ -4,10 +4,10 @@
     - Rails 5.0.0.1
 
 ### STAGING
-http://api.staging-imoto.jetru.by/graphiql
+http://staging-imoto.jetru.by/graphiql
 
 ### ADMIN DASHBOARD
-http://api.staging-imoto.jetru.by/admins/sign_in
+http://staging-imoto.jetru.by/admins/sign_in
 
 * Email: admin@example.com
 
