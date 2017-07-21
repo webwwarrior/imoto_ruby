@@ -1,0 +1,9 @@
+- if action_name == 'show'
+  %input{ value: item.data['extensions']&.join(','), disabled: true }
+- else
+  .text
+    %select{ multiple: true, name: 'product[attribute_items_attributes][][data][extensions][]', required: true, data: { taggable: (item.present? ? 'attribute' : 'tags') } }
+      - if item.present?
+        - item.data['extensions']&.each do |tag|
+          %option{ selected: 'selected' }
+            = tag

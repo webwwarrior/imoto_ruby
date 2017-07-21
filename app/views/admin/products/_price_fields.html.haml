@@ -1,0 +1,31 @@
+.text
+  .type
+    Type: #{kind.titleize}
+    - if kind == 'tags'
+      (Indicates that product could have tags)
+    - if action_name != 'show'
+      - if item.present? && item.order_attributes.with_uncompleted_orders.any?
+        %abbr{ title: 'You can not delete this attribute, since there are some not completed orders associated with this attribute' }
+          .closed
+            X
+      -else
+        .closed{ data: { type: :closed } }
+          X
+.box_block
+  .box_label
+    Base price
+  .box_field
+    %input{ name: 'product[attribute_items_attributes][][base_price]', type: 'number', placeholder: '0.00', min: 0.01, step: 0.01, required: true, value: item.present? ? item.base_price : nil, disabled:  action_name == 'show' }
+  .box_label
+    Base quantity
+  .box_field
+    %input{ name: 'product[attribute_items_attributes][][base_quantity]', type: 'number', placeholder: '0', min: 1, step: 1, required: true, value: item.present? ? item.base_quantity : nil, disabled:  disabled_attribute_fields(kind) }
+
+.box_block
+  .box_label
+    Additional price
+  .box_field
+    %input{ name:'product[attribute_items_attributes][][additional_price]', type: 'number', placeholder: '0.00', min: 0.01, step: 0.01, required: true, value: item.present? ? item.additional_price : nil, disabled:  disabled_attribute_fields(kind) }
+    %input{ type: 'hidden', name: 'product[attribute_items_attributes][][kind]', value: kind }
+      - if item.present?
+        %input{ type: 'hidden', name: 'product[attribute_items_attributes][][id]', value: item.id }

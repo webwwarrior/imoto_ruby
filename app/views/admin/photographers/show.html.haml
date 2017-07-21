@@ -1,0 +1,19 @@
+= content_for(:title) { page.page_title }
+
+%header.header
+  %h1.header__heading= content_for(:title)
+  .header__actions= link_to('Edit', [:edit, namespace, page.resource], class: 'button')
+
+%dl
+  - page.attributes.each do |attribute|
+    %dt.attribute-label
+      = t("helpers.label.#{resource_name}.#{attribute.name}", default: attribute.name.titleize)
+
+    %dd.attribute-data{ class: "attribute-data--#{attribute.html_class}" }
+      = render_field attribute
+  %dt.attribute-label
+    ZIP CODES
+  %dd.attribute-data
+    - page.resource.zip_codes.each do |zip_code|
+      = zip_code.value
+

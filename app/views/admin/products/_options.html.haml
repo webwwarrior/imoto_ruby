@@ -1,0 +1,14 @@
+%div.hidden{ data: { type_options: :clone, type: :options } }
+  %div{ data: { products_attribute_type: :clone } }
+    .field-unit.field-unit--attribute
+      .options_box
+        %dev.closed{ data: { type: :closed } }
+          X
+        .body_label
+          Quantity
+        .body_field
+          %input{ name:'product[attribute_items_attributes][][data][quantity][]', type: 'number', placeholder: '25', min: 1, step: 1, required: true }
+        .body_label
+          Label
+        .body_field
+          %input{ name:'product[attribute_items_attributes][][data][label][]', type: 'text', placeholder: '25 Photos', required: true }

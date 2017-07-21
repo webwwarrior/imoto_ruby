@@ -1,0 +1,18 @@
+default: &default
+  after_confirmation_path: '/photographers/:id'
+
+development:
+  <<: *default
+  host: 'http://localhost:3000'
+
+test:
+  <<: *default
+  host: 'http://localhost:3000'
+
+staging:
+  <<: *default
+  host: 'http://staging-imoto.jetru.by'
+
+production:
+  <<: *default
+  host:

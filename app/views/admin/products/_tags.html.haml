@@ -1,0 +1,5 @@
+%div
+  .body_label
+    Placeholder:
+  .body_field
+    %input{ name: 'product[attribute_items_attributes][][data][placeholder]', type: 'text', value: item.present? ? item.data['placeholder'] : nil, disabled:  action_name == 'show', required: true }

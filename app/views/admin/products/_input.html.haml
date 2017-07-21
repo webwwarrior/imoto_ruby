@@ -1,0 +1,18 @@
+.body_label
+  Unit
+.body_field
+  %input{ name: 'product[attribute_items_attributes][][data][unit]', type: 'text', placeholder: 'sq/ft', value: item.present? ? item.data['unit'] : nil, disabled:  action_name == 'show', required: true }
+.body_label
+  Kind
+.body_field
+  %select{ name: 'product[attribute_items_attributes][][data][kind]', type: 'text', disabled: action_name == 'show'  }
+    - ['integer'].each do |kind|
+      %option{ selected: selected_options(kind, item, 'kind')  }
+        = kind
+.body_label
+  Note
+.body_field
+  %select{ name: 'product[attribute_items_attributes][][data][note]', type: 'text', disabled: action_name == 'show' }
+    - ['square_footage', 'blank'].each do |note|
+      %option{ selected: selected_options(note, item, 'note') }
+        = note

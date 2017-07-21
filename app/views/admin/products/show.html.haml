@@ -1,0 +1,21 @@
+= content_for(:title) { page.page_title }
+
+%header.header
+  %h1.header__heading= content_for(:title)
+  .header__actions= link_to('Edit', [:edit, namespace, page.resource], class: 'button')
+
+%dl
+  - page.attributes.each do |attribute|
+    %dt.attribute-label
+      = t("helpers.label.#{resource_name}.#{attribute.name}", default: attribute.name.titleize)
+
+    %dd.attribute-data{ class: "attribute-data--#{attribute.html_class}" }
+      = render_field attribute
+  - page.resource.attribute_items.each do |item|
+    .field-unit.field-unit--attribute
+      .field-unit__label
+      .box
+        = render 'price_fields', kind: item.kind, item: item, update: true
+        - unless %w(hidden order_details).include?(item.kind)
+          .block
+            = render item.kind, item: item

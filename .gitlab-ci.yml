@@ -1,0 +1,72 @@
+image: registry.jetru.by/images/ruby:2.3.1
+
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  DATABASE_URL: "postgresql://postgres@postgres/test"
+  REDIS_URL: "redis://redis:6379/1"
+
+overcommit:
+  stage: test
+  script:
+    - git config --global user.email "gitlab@jetruby.com"
+    - git config --global user.name "GitLab CI"
+    - gem install overcommit
+    - overcommit --install
+    - overcommit --sign
+    - overcommit --run
+
+brakeman:
+  script:
+    - gem install brakeman --no-ri --no-rdoc
+    - brakeman -o brakeman.html
+  artifacts:
+    paths:
+      - brakeman.html
+
+test:
+  services:
+    - postgres
+    - redis
+  stage: test
+  script:
+    - cp config/cable.yml.tt config/cable.yml
+    - cp config/secrets.yml.tt config/secrets.yml
+    - bundle install -j 4 --path /cache
+    - bundle exec rake db:create
+    - bundle exec rake db:migrate
+    - bundle exec rspec spec
+
+build:
+  image: docker:latest
+  stage: build
+  script:
+    - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME"
+
+deploy to staging:
+  stage: deploy
+  environment:
+    name: staging
+    url: http://api.staging-imoto.jetru.by
+  image: cdrx/rancher-gitlab-deploy
+  script:
+    - upgrade --stack Imoto-Staging --service Backend
+  only:
+    - master
+
+deploy to demo:
+  stage: deploy
+  environment:
+    name: demo
+    url: http://api.imoto.wiredqa.com
+  image: cdrx/rancher-gitlab-deploy
+  script:
+    - upgrade --stack Imoto-Demo --service Backend
+  only:
+    - demo
+  when: manual

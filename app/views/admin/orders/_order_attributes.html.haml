@@ -1,0 +1,21 @@
+%table
+  %tr
+    %th
+      Product name
+    %th
+      Attribute
+    %th
+      Quantity
+    %th
+      Price
+    - if page.resource.photographer.blank?
+      %th _
+  - page.resource.order_attributes.each do |order_attribute|
+    %tr
+      %td= order_attribute.name
+      %td= order_attribute.attribute_item&.kind
+      %td= order_attribute.quantity
+      %td= order_attribute.price
+      - if page.resource.photographer.blank?
+        %td
+          = link_to 'Delete', admin_order_order_attribute_path(page.resource, attribute_id: order_attribute.id), method: :delete, data: { confirm: 'Are you sure?' }

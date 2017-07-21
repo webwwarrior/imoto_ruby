@@ -1,0 +1,11 @@
+%b Basic
+%table
+  = render 'table_title'
+  - AttributeItem.basic(company_id).order(:created_at).each do |item|
+    %tr
+      %td= item.product.name
+      %td= item.kind.titleize
+      %td= number_to_currency(item.base_price)
+      %td= item.base_quantity
+      %td= number_to_currency(item.additional_price)
+      %td= link_to '>', admin_company_customize_prices_path(company_id, item_id: item.id), method: :post

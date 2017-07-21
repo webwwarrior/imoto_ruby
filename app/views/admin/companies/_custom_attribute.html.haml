@@ -1,0 +1,11 @@
+%b Custom
+%table
+  = render 'admin/companies/table_title'
+  - AttributeItem.customized(company_id).order(:created_at).each do |item|
+    %tr{ data: { attribute_id: item.id } }
+      %td= item.product.name
+      %td= item.kind.titleize
+      %td= link_to number_to_currency(item.base_price, separator: ',', delimiter: ''), edit_admin_company_customize_price_path(company_id, item.id, type: :base_price), remote: true, data: { modal: :open }
+      %td= item.base_quantity
+      %td= link_to number_to_currency(item.additional_price, separator: ',', delimiter: ''), edit_admin_company_customize_price_path(company_id, item.id, type: :additional_price), remote: true, data: { modal: :open }
+      %td= link_to '<',  admin_company_customize_price_path(company_id, item.id), method: :delete

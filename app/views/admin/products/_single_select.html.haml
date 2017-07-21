@@ -1,0 +1,63 @@
+- if action_name == 'show'
+  .text{ data: { options_single_select: :clone } }
+    OPTIONS:
+    - item.data.each do |key, value|
+      %div{ data: { products_attribute_type: :clone } }
+        .field-unit.field-unit--attribute
+          .options_box
+            .body_label
+              Quantity
+            .body_field
+              %input{ value: key, disabled: true }
+            .body_label
+              Label
+            .body_field
+              %input{ value: "#{key} Photos", disabled: true }
+            .body_label
+              Price
+            .body_field
+              %input{ value: value, disabled: true }
+- else
+  .text{ data: { options_single_select: :clone } }
+    OPTIONS:
+    %button{ type: :button, data: { type: :add_options } }
+      Add Options
+    .field-unit.field-unit--attribute
+      .options_box
+        .body_label
+          Quantity
+        .body_field
+          %input{ name: 'product[attribute_items_attributes][][data][quantity][]', type: 'number', placeholder: '25', min: 1, step: 1, required: true, value: item.present? ? item.data.first[0] : nil }
+
+        .body_label
+          Label
+        .body_field
+          %input{ name: 'product[attribute_items_attributes][][data][label][]', type: 'text', placeholder: '25 Photos', disabled: true, value: item.present? ? "#{item.data.first[0]} Photos" : nil }
+
+        .body_label
+          Price
+        .body_field
+          %input{ name:'product[attribute_items_attributes][][data][price][]', type: 'number', placeholder: '1.0', required: true, value: item.present? ? item.data.first[1] : nil }
+
+    - if item.present?
+      - item.data.each_with_index do |(key, value), index|
+        - unless index.zero?
+          %div{ data: { products_attribute_type: :clone } }
+            .field-unit.field-unit--attribute
+              .options_box
+                %dev.closed{ data: { type: :closed } }
+                  X
+                .body_label
+                  Quantity
+                .body_field
+                  %input{ name: 'product[attribute_items_attributes][][data][quantity][]', type: 'number', placeholder: '25', min: 1, step: 1, required: true, value: key }
+
+                .body_label
+                  Label
+                .body_field
+                  %input{ name: 'product[attribute_items_attributes][][data][label][]', type: 'text', placeholder: '25 Photos', disabled: true, value: "#{key} Photos" }
+
+                .body_label
+                  Price
+                .body_field
+                  %input{ name:'product[attribute_items_attributes][][data][price][]', type: 'number', placeholder: '1.0', required: true, value: value }

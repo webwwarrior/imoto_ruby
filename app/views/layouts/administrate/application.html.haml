@@ -1,0 +1,27 @@
+!!!
+%html
+  %head
+    %meta{ charset: 'UTF-8' }
+    %meta{ name: 'ROBOTS', content: 'NOODP' }
+    %meta{ name: 'viewport', content: 'initial-scale=1' }
+    %title #{content_for(:title)} | #{Rails.application.class.parent_name.titlecase}
+    = render 'javascript'
+    = javascript_include_tag 'admin/application'
+    = stylesheet_link_tag    'admin/application', media: 'all'
+
+    = render 'stylesheet'
+    = csrf_meta_tags
+  %body
+    .app-container
+      .sidebar
+        = render 'sidebar'
+      %main.main-content{ role: 'main' }
+        %header.header
+          .header__heading
+          .header__actions
+            = link_to 'Sign out', destroy_admin_session_path, class: 'button', method: :delete
+        = content_for(:search)
+        = render 'flashes'
+        = yield
+
+      = render 'admin/shared/modal'

@@ -1,0 +1,2 @@
+class DocumentsUploader < BaseUploader
+end

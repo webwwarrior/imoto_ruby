@@ -1,0 +1,28 @@
+.box_block
+  .box_label
+    Min number
+  .box_field
+    %input{ name: 'product[attribute_items_attributes][][data][quantity_range][]', type: 'number', placeholder: 'Enter number', min: 1, value: item.present? ? item.data['quantity_range'][0] : nil, disabled:  action_name == 'show', required: true }
+
+.box_block
+  .box_label
+    Max number
+  .box_field
+    %input{ name: 'product[attribute_items_attributes][][data][quantity_range][]', type: 'number', placeholder: 'Enter number', min: 1, value: item.present? ? item.data['quantity_range'][1] : nil, disabled:  action_name == 'show', required: true }
+
+.body_label
+  Main:
+.body_field
+  %input{ name: 'product[attribute_items_attributes][][data][main_select_label]', type: 'text', placeholder: 'Main select label', value: item.present? ? item.data['main_select_label'] : nil, disabled:  action_name == 'show', required: true }
+
+.body_label
+  Labels:
+.body_field
+  - if action_name == 'show'
+    %input{ value: item.data['subselect_labels']&.join(', '), disabled: true }
+  - else
+    %select{ multiple: true, name: 'product[attribute_items_attributes][][data][subselect_labels][]', required: true, data: { taggable: (item.present? ? 'attribute' : 'tags') } }
+      - if item.present?
+        - item.data['subselect_labels']&.each do |tag|
+          %option{ selected: 'selected' }
+            = tag

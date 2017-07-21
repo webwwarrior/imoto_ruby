@@ -1,0 +1,2 @@
+class LogoUploader < BaseUploader
+end

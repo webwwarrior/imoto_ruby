@@ -1,0 +1,36 @@
+%header.header
+  %h1.header__heading New Photographer
+= form_for([namespace, page.resource], html: { class: 'form' }) do |f|
+  - if page.resource.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(page.resource.errors.count, 'error')
+        prohibited this
+        = page.resource_name
+        from being saved:
+      %ul
+        - page.resource.errors.full_messages.each do |message|
+          %li= message
+
+  - page.attributes.each do |attribute|
+    .field-unit{ class: "field-unit--#{attribute.html_class}" }
+      = render_field attribute, f: f
+  .field-unit.field-unit--attribute
+    .field-unit__label
+      %b Zip codes
+    .field-unit__field
+      = f.select :zip_code_ids, options_for_select([]), {}, { multiple: true, data: { taggable: :zip_codes, select2_remote: admin_zip_codes_path(format: :json) } }
+  .field-unit.field-unit--attribute
+    .field-unit__label
+      %b Defaul time zone
+    .field-unit__field
+      %select{ data: { placeholder: :time_zone }, name: 'photographer[default_time_zone]' }
+        - @time_zones.each do |zone|
+          %option
+            = zone
+        %option{ selected: 'selected' }
+          = page.resource.default_time_zone
+  .field-unit.field-unit--attribute
+    .field-unit__label
+    .field-unit__field
+      = f.submit 'Save'

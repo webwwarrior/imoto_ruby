@@ -1,0 +1,11 @@
+%b Edit
+= form_tag admin_order_path(@order), method: :patch do
+  Preffered time
+  = select_tag :preferred_time, options_for_select(time), type: 'time'
+  %br
+  Travel costs
+  = text_field_tag :travel_costs, nil, type: 'number', required: true, min: 0.01, step: 0.01
+  = hidden_field_tag :photographer_id, photographer.id
+  = hidden_field_tag :date, date
+  %br
+  = submit_tag :ok

@@ -1,0 +1,23 @@
+= form_for([namespace, page.resource], html: { class: 'form' }) do |f|
+  - if page.resource.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(page.resource.errors.count, 'error')
+        prohibited this #{page.resource_name} from being saved:
+
+      %ul
+        - page.resource.errors.full_messages.each do |message|
+          %li
+            = message
+
+  - page.attributes.each do |attribute|
+    - if current_page?(action: 'new')
+      - if attribute.attribute != :current_password
+        .field-unit{ class: "field-unit--#{attribute.html_class}" }
+          = render_field attribute, f: f
+    - else
+      .field-unit{ class: "field-unit--#{attribute.html_class}" }
+        = render_field attribute, f: f
+
+  .form-actions
+    = f.submit

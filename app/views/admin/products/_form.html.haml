@@ -1,0 +1,62 @@
+= form_for([namespace, page.resource], html: { class: 'form' }) do |f|
+  - if page.resource.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(page.resource.errors.count, 'error')
+        prohibited this
+        = page.resource_name
+        from being saved:
+      %ul
+        - page.resource.errors.full_messages.each do |message|
+          %li= message
+
+  - page.attributes.each do |attribute|
+    - if attribute.attribute == :status
+      .field-unit.field-unit--status
+        .field-unit__label
+          %b Status
+        .field-unit__field
+          = f.hidden_field :status, value: :disabled
+          = f.select :status, Product.statuses.keys, {}, disabled: page.resource.attribute_items.blank?, title: 'Can change only after add attributes', data: { attribute: :status }
+    - else
+      .field-unit{ class: "field-unit--#{attribute.html_class}" }
+        = render_field attribute, f: f
+
+  .field-unit.field-unit--attribute
+    .field-unit__label
+      %b Type:
+    .field-unit__field
+      = select_tag :kind, options_for_select(AttributeItem.kinds.keys.map{ |k| [k.titleize, k] }.to_h), data: { products_type: :kind }
+    %button{ type: :button, data: { type: :add_kind } }
+      Add
+  %input{ type: 'hidden', name: 'product[attribute_items_attributes][]' }
+  %div{ data: { type: :attributes } }
+
+  - if page.resource.attribute_items.present?
+    - page.resource.attribute_items.each do |item|
+      %div{ data: { products_attribute_type: :clone } }
+        .field-unit.field-unit--attribute
+          .field-unit__label
+          .box
+            = render 'price_fields', kind: item.kind, item: item, update: true
+            - if %w(hidden order_details).exclude?(item.kind)
+              .block
+                = render item.kind, item: item
+
+  .field-unit.field-unit--attribute
+    .field-unit__label
+    .field-unit__field
+      = f.submit 'save'
+
+- AttributeItem.kinds.keys.each do |kind|
+  %div.hidden{ data: { products_attribute_type: kind } }
+    %div{ data: { products_attribute_type: :clone } }
+      .field-unit.field-unit--attribute
+        .field-unit__label
+        .box
+          = render 'price_fields', kind: kind, item: nil, update: false
+          - if %w(hidden order_details).exclude?(kind)
+            .block
+              = render kind, item: nil
+
+= render 'options'

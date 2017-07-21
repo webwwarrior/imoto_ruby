@@ -1,0 +1,28 @@
+= content_for(:title) { page.page_title }
+
+.div{ data: 'modal' }
+%header.header
+  %h1.header__heading= content_for(:title)
+%dl
+  - page.attributes.each do |attribute|
+    %dt.attribute-label
+      = t("helpers.label.#{resource_name}.#{attribute.name}", default: attribute.name.titleize)
+
+    %dd.attribute-data{ class: "attribute-data--#{attribute.html_class}" }
+      = render_field attribute
+
+.box_field
+  .text
+    %h1
+      Photographer:
+      - if page.resource.photographer.present?
+        = page.resource.photographer.full_name
+        = link_to 'X', admin_order_path(page.resource), method: :delete, data: { confirm: 'Are you sure?' }
+      - else
+        not selected
+    %br
+  - unless page.resource.photographer.present?
+    = render 'photographers', photographers: photographers, page: page
+
+.box_field
+  = render 'order_attributes', page: page

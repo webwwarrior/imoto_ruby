@@ -1,0 +1,25 @@
+%table.collection-data{ aria: { labelledby: 'page-title' } }
+  %thead
+    %tr
+      - collection_presenter.attribute_types.each do |attr_name, attr_type|
+        %th.cell-label{ class: "cell-label--#{attr_type.html_class} cell-label--#{collection_presenter.ordered_html_class(attr_name)}", scope: 'col' }
+          = link_to (sanitized_order_params.merge(collection_presenter.order_params_for(attr_name))) do
+            = t("helpers.label.#{resource_name}.#{attr_name}", default: attr_name.to_s).titleize
+            - if collection_presenter.ordered_by?(attr_name)
+              %span.cell-label__sort-indicator{ class: "cell-label__sort-indicator--#{collection_presenter.ordered_html_class(attr_name)}" }
+                = svg_tag('administrate/sort_arrow.svg', 'sort_arrow', width: '13', height: '13')
+
+      %th{ colspan: '2', scope: 'col' }
+
+  %tbody
+    - resources.each do |resource|
+      %tr.table__row{ role: 'link', tabindex: '0', data: { url: polymorphic_path([namespace, resource]) } }
+        - collection_presenter.attributes_for(resource).each do |attribute|
+          - if attribute.attribute == :customer
+            %td.cell-data.cell-data--customer_name
+              = attribute.data&.full_name
+          - else
+            %td.cell-data{ class: "cell-data--#{attribute.html_class}" }
+              = render_field attribute
+        %td
+          = link_to(t('administrate.actions.show'), [namespace, resource], class: 'table__action--destroy')

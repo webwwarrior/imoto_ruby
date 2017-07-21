@@ -1,0 +1,3 @@
+$('[data-custom=attribute]').empty();
+$('[data-custom=attribute]').append("<%= j render('admin/companies/custom_attribute', url: admin_companies_path(@company), company_id: @company.id) %>")
+$('[data-modal=window]').hide();

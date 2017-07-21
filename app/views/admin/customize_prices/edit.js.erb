@@ -1,0 +1,2 @@
+$("[data-modal='body']").empty();
+$("[data-modal='body']").append("<%= j render('admin/companies/form_for_attribute', url: admin_companies_path(@company), company: @company, attribute: @attribute, type: params[:type]) %>");

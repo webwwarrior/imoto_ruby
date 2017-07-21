@@ -1,0 +1,9 @@
+%form.search
+  %span.search__icon
+    = svg_tag 'administrate/search.svg', 'search', width: 16, height: 16
+  %input.search__input{ type: 'text', name: 'search', placeholder: 'Search', value: "#{search_term}", aria: { label: 'Search' } }
+  %span.search__hint
+    Press enter to search
+  %span.search__clear
+    = link_to params.except(:search, :page).permit(:order, :direction, :per_page) do
+      = svg_tag 'administrate/cancel.svg', 'cancel-search', width: 16, height: 16

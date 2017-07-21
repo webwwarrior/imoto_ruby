@@ -1,0 +1,104 @@
+@import 'select2';
+
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
+.width-row-2{
+  width: 19%;
+  float: left;
+  padding: 0.5%;
+}
+
+.width-row-5 {
+  width: 39%;
+  padding: 0.5%;
+  float: left;
+}
+
+.block {
+  width: 100%;
+  float: left;
+}
+
+.modal_window {
+  position:fixed;
+  left: 40%;
+  background:rgba(0,0,0,0.2);
+  border-radius:4px;
+  padding:4px;
+  top: 40%;
+}
+
+.modal_content {
+  border-radius:2px;
+  background:#fff;
+  padding:20px;
+}
+
+.hidden {
+  display: none;
+}
+
+[data-edit-attribute='button'] {
+  cursor: pointer;
+}
+
+.box {
+  border: 2px solid #696969;
+  width: 40.29137%
+}
+
+.box_label {
+  width: 48%;
+  float: left;
+  font-size: 90%;
+  padding: 2%;
+}
+
+.box_field {
+  width: 48%;
+  float: left;
+  padding: 2%;
+}
+
+.body_label {
+  width: 15%;
+  float: left;
+  font-size: 90%;
+  padding: 1%;
+}
+
+.body_field {
+  width: 83%;
+  float: left;
+  padding: 1%;
+}
+
+.box_block {
+  width: 50%;
+  float: left;
+}
+
+.text {
+  padding: 1%;
+  width: 100%;
+}
+
+.closed {
+  float: right;
+  cursor: pointer;
+  width: 2%;
+}
+
+.type {
+  width: 98%;
+  float:left;
+}

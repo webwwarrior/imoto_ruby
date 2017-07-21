@@ -1,0 +1,11 @@
+development: &development
+  adapter: postgresql
+  encoding: unicode
+  database: imoto_development
+  pool: 25
+  min_messages: WARNING
+
+test:
+  <<: *development
+  database: imoto_test
+  min_messages: WARNING

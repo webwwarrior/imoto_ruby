@@ -1,0 +1,10 @@
+%div
+  .body_label
+    Label:
+  .body_field
+    %input{ name: 'product[attribute_items_attributes][][data][label]', type: 'text', value: item.present? ? item.data['label'] : nil, disabled:  action_name == 'show', required: true }
+%div
+  .body_label
+    Description:
+  .body_field
+    %input{ name: 'product[attribute_items_attributes][][data][description]', type: 'text', value: item.present? ? item.data['description'] : nil, disabled: action_name == 'show', required: true }

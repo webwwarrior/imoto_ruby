@@ -1,0 +1,5 @@
+%b Edit
+= form_tag admin_company_customize_price_path(@company, @attribute), method: :patch, remote: true do
+  = text_field_tag type.to_sym, nil,  data: { modal: :value }, autofocus: true, value: @attribute.send(type)
+  %br
+  = submit_tag

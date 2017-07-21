@@ -1,0 +1,94 @@
+%header.header
+  %h1.header__heading Edit Photographer #{page.resource.full_name}
+= form_for([namespace, page.resource], html: { class: 'form' }) do |f|
+  - if page.resource.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(page.resource.errors.count, 'error')
+        prohibited this
+        = page.resource_name
+        from being saved:
+      %ul
+        - page.resource.errors.full_messages.each do |message|
+          %li= message
+
+  - page.attributes.each do |attribute|
+    .field-unit{ class: "field-unit--#{attribute.html_class}" }
+      = render_field attribute, f: f
+  .field-unit.field-unit--attribute
+    .field-unit__label
+      %b Zip codes
+    .field-unit__field
+      %select{ name: 'photographer[zip_code_ids][]', multiple: true, data: { taggable: :zip_codes, select2_remote: admin_zip_codes_path(format: :json) } }
+        - page.resource.zip_codes.each do |zip_code|
+          %option{ selected: 'selected', value: zip_code.id }
+            = zip_code.value
+      %input{ name: 'photographer[zip_code_ids][]', value: nil, type: 'hidden'}
+  .field-unit.field-unit--attribute
+    .field-unit__label
+      %b Defaul time zone
+    .field-unit__field
+      %select{ data: { placeholder: :time_zone }, name: 'photographer[default_time_zone]' }
+        - @time_zones.each do |zone|
+          %option
+            = zone
+        %option{ selected: 'selected' }
+          = page.resource.default_time_zone
+
+  %table{ style: 'width:80%; margin:auto' }
+    %tr
+      %th
+      %th
+        Product Name
+      %th
+        Type
+      %th
+        Quantity
+      %th
+        Time (minutes)
+      %th
+        Rate, $
+      %th
+        Additional Time
+      %th
+        Additional Rate
+      %input{ type: 'hidden', name: 'photographer[photographer_attributes_attributes][]' }
+    - AttributeItem.basic(nil).order(:created_at).each do |attribute|
+      - if attribute.customized_attribute(page.resource.id).present?
+        %tr
+          %td
+            %input{ type: 'checkbox', name: 'photographer[photographer_attributes_attributes][][attribute_item_id]', value: attribute.id, data: { check_box: :true }, checked: true }
+          %td= attribute.extended_name
+          %td= attribute.kind_name
+          %td
+            %input{ value: attribute.base_quantity, disabled: true }
+          %td
+            %input{ value: attribute.customized_attribute(page.resource.id).default_time, name: 'photographer[photographer_attributes_attributes][][default_time]',  data: 'field', type: 'number', min: 1 }
+          %td
+            %input{ value: attribute.customized_attribute(page.resource.id).rate, name: 'photographer[photographer_attributes_attributes][][rate]', data: 'field', type: 'number' }
+          %td
+            %input{ value: attribute.customized_attribute(page.resource.id).extra_time, data: 'field', name: 'photographer[photographer_attributes_attributes][][extra_time]' }
+          %td
+            %input{ value: attribute.customized_attribute(page.resource.id).additional_rate, data: 'field', name: 'photographer[photographer_attributes_attributes][][additional_rate]' }
+            %input{ type: 'hidden', name: 'photographer[photographer][][id]', value: attribute.customized_attribute(page.resource.id).id }
+      - else
+        %tr
+          %td
+            %input{ type: 'checkbox', name: 'photographer[photographer_attributes_attributes][][attribute_item_id]', value: attribute.id, data: { check_box: :true } }
+          %td= attribute.extended_name
+          %td= attribute.kind_name
+          %td
+            %input{ value: attribute.base_quantity, disabled: true }
+          %td
+            %input{ value: 0, name: 'photographer[photographer_attributes_attributes][][default_time]', disabled: true, data: 'field', type: 'number' }
+          %td
+            %input{ value: attribute.base_price, name: 'photographer[photographer_attributes_attributes][][rate]', disabled: true, data: 'field', type: 'number' }
+          %td
+            %input{ value: 0, disabled: true, data: 'field', name: 'photographer[photographer_attributes_attributes][][extra_time]' }
+          %td
+            %input{ value: attribute.additional_price, disabled: true, data: 'field', name: 'photographer[photographer_attributes_attributes][][additional_rate]' }
+
+  %br
+  .field-unit.field-unit--attribute
+    .field-unit__label
+      = f.submit 'Save'

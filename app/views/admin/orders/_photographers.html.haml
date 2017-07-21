@@ -1,0 +1,36 @@
+%h1 Seelect new photographer
+= form_tag(admin_order_path(page.resource), method: :get) do
+  .block
+    .width-row-2
+      Preferred Time
+    .width-row-5
+      = date_field_tag :date, params[:date].present? ? params[:date] : Date.current, data: { preffered_time: :date }, required: true
+  .block
+    .width-row-5
+      = text_field_tag :search, params['search'], placeholder: 'Search', required: true
+    .width-row-5
+      = select_tag :type, options_for_select([['by name', 'name'], ['by city', 'city'], ['by state', 'state_name']]), type: 'time'
+    .width-row-2
+      = submit_tag :go
+
+- if photographers[:with_time].present?
+  %table
+    %tr
+      %th
+        ID
+      %th
+        Full Name
+      %th
+        Available at
+      %th _
+    - photographers[:with_time].each do |photographer|
+      %tr
+        %td= photographer[:photographer].id
+        %td= photographer[:photographer].full_name
+        %td= photographer[:time].join(' ')
+        %td
+          = form_tag edit_admin_order_path(page.resource), method: 'get', remote: true do
+            = hidden_field_tag :photographer_id, photographer[:photographer].id
+            = hidden_field_tag :date, params[:date],  data: { date: :field }
+            = submit_tag :select, data: { modal: :open }
+  = paginate photographers[:all]
