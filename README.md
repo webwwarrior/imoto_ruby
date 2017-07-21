@@ -11,7 +11,7 @@ http://staging-imoto.jetru.by/admins/sign_in
 
 * Email: admin@example.com
 
-* Password: password
+* Password: ******
 
 ### Getting Started
 ---------------
